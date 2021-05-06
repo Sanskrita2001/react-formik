@@ -16,27 +16,6 @@ const onSubmit = (values) => {
 	console.log('Form data', values);
 };
 
-const validate = (values) => {
-	//values.name values.email values.channel
-	//errors.name errors.email errors.channel
-	let errors = {};
-
-	if (!values.name) errors.name = 'This field is required';
-	else if (!/^([^0-9]*)$/.test(values.name))
-		errors.name = 'Name should not contain numbers';
-
-	if (!values.email) {
-		errors.email = 'This field is required';
-	} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-		errors.email = 'Invalid email format';
-	}
-
-	if (!values.channel) {
-		errors.channel = 'This field is required';
-	}
-	return errors;
-};
-
 const validationSchema = Yup.object({
 	name: Yup
 		.string()
@@ -56,7 +35,6 @@ const YoutubeForm = () => {
 		initialValues,
 		onSubmit,
 		validationSchema,
-		// validate,
 	});
 	return (
 		<MainContainer>
@@ -70,9 +48,7 @@ const YoutubeForm = () => {
 						id='name'
 						name='name'
 						label='Name'
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.name}
+						{...formik.getFieldProps('name')}
 						helperText={
 							formik.touched.name && formik.errors.name ? (
 								<div style={{ color: '#f44336' }}>{formik.errors.name}</div>
@@ -86,9 +62,7 @@ const YoutubeForm = () => {
 						id='email'
 						name='email'
 						label='Email'
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.email}
+						{...formik.getFieldProps('email')}
 						helperText={
 							formik.touched.email && formik.errors.email ? (
 								<div style={{ color: '#f44336' }}>{formik.errors.email}</div>
@@ -102,9 +76,7 @@ const YoutubeForm = () => {
 						id='channel'
 						name='channel'
 						label='Channel'
-						onChange={formik.handleChange}
-						onBlur={formik.handleBlur}
-						value={formik.values.channel}
+						{...formik.getFieldProps('channel')}
 						helperText={
 							formik.touched.channel && formik.errors.channel ? (
 								<div style={{ color: '#f44336' }}>{formik.errors.channel}</div>
