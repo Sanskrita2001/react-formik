@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { Input } from './Input';
 import { useFormik } from 'formik';
 import { PrimaryButton } from './PrimaryButton';
+import * as Yup from 'yup';
 
 const initialValues = {
 	name: '',
@@ -36,13 +37,27 @@ const validate = (values) => {
 	return errors;
 };
 
+const validationSchema = Yup.object({
+	name: Yup
+		.string()
+		.matches(/^([^0-9]*)$/, 'First name should not contain numbers')
+		.required('First name is a required field'),
+	email: Yup
+		.string()
+		.email('Invalid email format')
+		.required('This field is required'),
+	channel: Yup
+		.string()
+		.required('This field is required'),
+});
+
 const YoutubeForm = () => {
 	const formik = useFormik({
 		initialValues,
 		onSubmit,
-		validate,
+		validationSchema,
+		// validate,
 	});
-	console.log('Visited fields', formik.touched);
 	return (
 		<MainContainer>
 			<Typography component='h2' variant='h5'>
