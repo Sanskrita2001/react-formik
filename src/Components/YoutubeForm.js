@@ -1,9 +1,7 @@
 import React from 'react';
-import Form from './Form';
 import MainContainer from './MainContainer';
 import { Typography } from '@material-ui/core';
-import { Input } from './Input';
-import { useFormik } from 'formik';
+import { Formik,Form,Field,ErrorMessage } from 'formik';
 import { PrimaryButton } from './PrimaryButton';
 import * as Yup from 'yup';
 
@@ -31,61 +29,35 @@ const validationSchema = Yup.object({
 });
 
 const YoutubeForm = () => {
-	const formik = useFormik({
-		initialValues,
-		onSubmit,
-		validationSchema,
-	});
 	return (
 		<MainContainer>
 			<Typography component='h2' variant='h5'>
 				YouTube Form
 			</Typography>
-			<Form onSubmit={formik.handleSubmit}>
-				<div>
-					<Input
-						type='text'
-						id='name'
-						name='name'
-						label='Name'
-						{...formik.getFieldProps('name')}
-						helperText={
-							formik.touched.name && formik.errors.name ? (
-								<div style={{ color: '#f44336' }}>{formik.errors.name}</div>
-							) : null
-						}
-					/>
-				</div>
-				<div>
-					<Input
-						type='email'
-						id='email'
-						name='email'
-						label='Email'
-						{...formik.getFieldProps('email')}
-						helperText={
-							formik.touched.email && formik.errors.email ? (
-								<div style={{ color: '#f44336' }}>{formik.errors.email}</div>
-							) : null
-						}
-					/>
-				</div>
-				<div>
-					<Input
-						type='text'
-						id='channel'
-						name='channel'
-						label='Channel'
-						{...formik.getFieldProps('channel')}
-						helperText={
-							formik.touched.channel && formik.errors.channel ? (
-								<div style={{ color: '#f44336' }}>{formik.errors.channel}</div>
-							) : null
-						}
-					/>
-				</div>
-				<PrimaryButton type='submit'>Submit</PrimaryButton>
-			</Form>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={validationSchema}
+				onSubmit={onSubmit}
+			>
+				<Form>
+					<div className='form-control'>
+						<label htmlFor='name'>Name</label>
+						<Field type='text' id='name' name='name' label='Name' />
+						<ErrorMessage name='name' />
+					</div>
+					<div className='form-control'>
+						<label htmlFor='email'>Email</label>
+						<Field type='email' id='email' name='email' label='Email' />
+						<ErrorMessage name='email' />
+					</div>
+					<div className='form-control'>
+						<label htmlFor='channel'>Channel</label>
+						<Field type='text' id='channel' name='channel' label='Channel' />
+						<ErrorMessage name='channel' />
+					</div>
+					<PrimaryButton type='submit'>Submit</PrimaryButton>
+				</Form>
+			</Formik>
 		</MainContainer>
 	);
 };
