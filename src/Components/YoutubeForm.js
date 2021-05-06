@@ -56,6 +56,7 @@ const YoutubeForm = () => {
 				initialValues={initialValues}
 				validationSchema={validationSchema}
 				onSubmit={onSubmit}
+				validateOnMount
 			>
 				{(formik) => {
 					console.log('formik', formik);
@@ -213,7 +214,9 @@ const YoutubeForm = () => {
 							>
 								Validate All
 							</Button>
-							<PrimaryButton type='submit'>Submit</PrimaryButton>
+							<PrimaryButton type='submit' disabled={!(formik.dirty && formik.isValid)}>
+								Submit
+							</PrimaryButton>
 						</Form>
 					);
 				}}
