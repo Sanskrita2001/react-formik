@@ -1,7 +1,14 @@
 import React from 'react';
 import MainContainer from './MainContainer';
 import { Button, Typography } from '@material-ui/core';
-import { Formik, Form, Field, ErrorMessage, FieldArray, FastField } from 'formik';
+import {
+	Formik,
+	Form,
+	Field,
+	ErrorMessage,
+	FieldArray,
+	FastField,
+} from 'formik';
 import { PrimaryButton } from './PrimaryButton';
 import * as Yup from 'yup';
 import TextError from './TextError';
@@ -32,6 +39,12 @@ const validationSchema = Yup.object({
 	channel: Yup.string().required('This field is required'),
 	address: Yup.string().required('This field is required'),
 });
+
+const validatePrimaryPhone = (value) => {
+	let error;
+	if (!value) error = 'This field is Required';
+	return error;
+};
 
 const YoutubeForm = () => {
 	return (
@@ -94,7 +107,13 @@ const YoutubeForm = () => {
 
 					<div className='form-control'>
 						<label htmlFor='primaryPh'>Primary Phone number</label>
-						<Field type='text' id='primaryPh' name='phoneNumbers[0]' />
+						<Field
+							type='text'
+							id='primaryPh'
+							name='phoneNumbers[0]'
+							validate={validatePrimaryPhone}
+						/>
+						<ErrorMessage name='phoneNumbers[0]' component={TextError} />
 					</div>
 					<div className='form-control'>
 						<label htmlFor='secondaryPh'>Secondary Phone number</label>
