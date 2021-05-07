@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MainContainer from './MainContainer';
 import { Button, Typography } from '@material-ui/core';
 import {
@@ -25,9 +25,23 @@ const initialValues = {
 	phoneNumbers: ['', ''],
 	phNumbers: [''],
 };
-const onSubmit = (values,onSubmitProps) => {
+const savedData = {
+	name: 'Sanskrita',
+	email: 'sanskrita2001@gmail.com',
+	channel: 'Sansage',
+	comments: '',
+	social: {
+		facebook: '',
+		instagram: '',
+	},
+	phoneNumbers: ['9875357640', ''],
+	phNumbers: [''],
+};
+
+const onSubmit = (values, onSubmitProps) => {
 	console.log('Form data', values);
 	onSubmitProps.setSubmitting(false);
+	onSubmitProps.resetForm();
 };
 
 const validationSchema = Yup.object({
@@ -48,15 +62,18 @@ const validatePrimaryPhone = (value) => {
 };
 
 const YoutubeForm = () => {
+	const [formValues, setFormValues] = useState(null);
+	console.log('Form values',formValues)
 	return (
 		<MainContainer>
 			<Typography component='h2' variant='h5'>
 				YouTube Form
 			</Typography>
 			<Formik
-				initialValues={initialValues}
+				initialValues={formValues || initialValues}
 				validationSchema={validationSchema}
 				onSubmit={onSubmit}
+				enableReinitialize
 				validateOnMount
 			>
 				{(formik) => {
@@ -178,7 +195,7 @@ const YoutubeForm = () => {
 									label='Comments'
 								/>
 							</div>
-							<Button
+							{/* <Button
 								color='primary'
 								onClick={() => {
 									formik.setFieldTouched('phoneNumbers[0]');
@@ -198,7 +215,7 @@ const YoutubeForm = () => {
 								}}
 							>
 								Visit All
-							</Button>
+							</Button> */}
 							<Button
 								color='primary'
 								onClick={() => {
@@ -215,7 +232,24 @@ const YoutubeForm = () => {
 							>
 								Validate All
 							</Button>
-							<PrimaryButton type='submit' disabled={!(formik.dirty && formik.isValid) || formik.isSubmitting}>
+							<Button type='reset' color='primary'>
+								Reset
+							</Button>
+							<PrimaryButton
+								type='button'
+								onClick={() => {
+									setFormValues(savedData);
+									console.log(savedData);
+								}}
+							>
+								Load Saved Data
+							</PrimaryButton>
+							<PrimaryButton
+								type='submit'
+								disabled={
+									!(formik.dirty && formik.isValid) || formik.isSubmitting
+								}
+							>
 								Submit
 							</PrimaryButton>
 						</Form>
